@@ -23,7 +23,7 @@ app.add_middleware(
 # ✅ BEST PRACTICE: Use environment variable
 MONGO_URL = os.getenv(
     "MONGO_URL",
-    "mongodb+srv://purvakhandekar1208_db_user:pmk123@cluster0.mmcylr7.mongodb.net/?appName=Cluster0"
+    "mongodb+srv://Anu21:abcdefghijk@travelappcluster.moid68x.mongodb.net/?appName=TravelAppCluster"
 )
 
 client = MongoClient(MONGO_URL)
@@ -208,19 +208,23 @@ def get_user_bookings(email: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.delete("/cancel-booking/{id}")
+# Change the route from @app.delete to @app.put (or keep delete but change logic)
+@app.put("/cancel-booking/{id}")
 def cancel_booking(id: str):
     try:
         if not ObjectId.is_valid(id):
             raise HTTPException(status_code=400, detail="Invalid ID")
 
-        result = bookings_collection.delete_one({"_id": ObjectId(id)})
+        # Update status to cancelled instead of deleting
+        result = bookings_collection.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"status": "cancelled"}}
+        )
 
-        if result.deleted_count == 0:
+        if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="Booking not found")
 
-        return {"message": "Booking cancelled"}
+        return {"message": "Booking cancelled successfully"}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
