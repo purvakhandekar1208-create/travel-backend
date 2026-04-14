@@ -23,7 +23,7 @@ app.add_middleware(
 # ✅ BEST PRACTICE: Use environment variable
 MONGO_URL = os.getenv(
     "MONGO_URL",
-    "mongodb+srv://Anu21:abcdefghijk@travelappcluster.moid68x.mongodb.net/?appName=TravelAppCluster"
+    "mongodb+srv://purvakhandekar1208_db_user:pmk123@cluster0.mmcylr7.mongodb.net/?appName=Cluster0"
 )
 
 client = MongoClient(MONGO_URL)
